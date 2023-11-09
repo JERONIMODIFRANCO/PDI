@@ -1,0 +1,3 @@
+polytomask para hacer una mascara , a hace le aplicamos un filtro y despues con la mascara negada sacamos esa parte de la imagen original y por ultimo dumamos la borrosa con la primera.
+
+Filtros: cuanto mas grande mas borroso

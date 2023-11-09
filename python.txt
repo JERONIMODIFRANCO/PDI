@@ -1,0 +1,68 @@
+// --- Python -----------------------------------------------------------------
+1) Instalar python:
+   https://www.python.org/downloads/
+	
+2) Instalar algún IDE para edición/debug (OPCIONAL, pero recomendable);
+   - Visual Studio Code (https://code.visualstudio.com/)
+   - Pycharm (https://www.jetbrains.com/es-es/pycharm/)
+   - ...
+   
+3) Instalar paquetes necesarios. 
+   Si utilizan el gestor de paquetes pip, los comandos son:
+	pip install numpy
+	pip install matplotlib
+	pip install opencv-contrib-python
+	
+		
+*** EXTRAS **********
+Si desean crear un entorno virtual para no pisar los paquetes y demás 
+configuraciones del root:
+	
+a) Crear entorno virtual:
+   python -m venv "directorio_a_especificar"
+   
+b) Activar entorno virtual 
+   Ejecutar el script: "directorio_a_especificar/Scripts/activate.bat"
+
+c) Instalar paquetes necesarios (paso 3).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --- 09/09/2020 ------------------------------------------------------------------------------------------------
+1) Fui a la carpeta: "C:\Users\Gonzalo\AppData\Local\Programs\Python\Python37"
+
+cd C:\Users\Gonzalo\AppData\Local\Programs\Python\Python37
+python -m venv "E:\Works\Works Python 3.7.7 64bit\venv-DIP"
+
+2) Activo el venv con:
+"E:\Works\Works Python 3.7.7 64bit\venv-DIP\Scripts\activate.bat"
+
+3) upgrade pip
+python -m pip install --upgrade pip
+
+// --- 10/09/2020 ------------------------------
+4) OpenCV
+
+pip install opencv-contrib-python
+
+https://pypi.org/project/opencv-python/
+--> Info https://stackoverflow.com/questions/51853018/how-do-i-install-opencv-using-pip
+
+- Sitio Oficial:
+https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_setup/py_setup_in_windows/py_setup_in_windows.html
+
+
