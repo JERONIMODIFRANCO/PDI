@@ -52,7 +52,7 @@ img = cv2.imread('cameraman.tif',cv2.IMREAD_GRAYSCALE)
 h = plt.imshow(img, cmap='gray')
 plt.colorbar(h)
 plt.show()
-
+# compresion
 cv2.imwrite("cameraman90.jpeg", img, [cv2.IMWRITE_JPEG_QUALITY, 90])
 cv2.imwrite("cameraman50.jpeg", img, [cv2.IMWRITE_JPEG_QUALITY, 50])
 cv2.imwrite("cameraman25.jpeg", img, [cv2.IMWRITE_JPEG_QUALITY, 25])
@@ -127,7 +127,7 @@ imgd.min()
 h = plt.imshow(imgd,cmap='gray')
 plt.colorbar(h)
 plt.show()
-
+#CREO QUE ESTO ES EL IMADJUST
 img = cv2.normalize(img.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX) # Así no, porque lleva los valores min/max a 0/1
 img.min()
 img.max()

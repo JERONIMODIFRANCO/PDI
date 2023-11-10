@@ -22,7 +22,7 @@ relation = width/height
 print(f'The relation of the image is {relation}')
 
 # Resize the image to a specific size
-width = 1600
+width = 1280
 height = int(width/relation)
 
 # Print the size of the image
@@ -40,14 +40,13 @@ img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 show('Imagen en gris',img_gray)
 
 # Apply the Canny edge detection algorithm
-img_edge = cv2.Canny(img_gray, 80, 280)
+img_edge = cv2.Canny(img_gray, 80, 200)
 show('Edges',img_edge)
 
 
 #Define a kernel for the dilation
 kernel = np.ones((3,3),np.uint8)
-img_dil = cv2.dilate(img_edge,kernel,iterations = 3)
-
+img_dil = cv2.dilate(img_edge,kernel,iterations = 1)
 # Display the resulting dilate image
 show('Dilation', img_dil)
 
@@ -55,29 +54,23 @@ show('Dilation', img_dil)
 ### ACA VIENE EL IMFILL HAY QUE VER COMO HACER
 
 # Define the seed point for flood filling
-seed_point = (100, 100)
+seed_point = (550, 550)
 
 # Define the color for flood filling
-fill_color = (255, 0, 0)
+fill_color = (255, 255, 255)
 
 # Define the lower and upper difference thresholds for flood filling
 lo_diff = (10, 10, 10)
 up_diff = (10, 10, 10)
 
 # Define the mask for flood filling
-mask = np.zeros((img.shape[0] + 2, img.shape[1] + 2), np.uint8)
+mask = np.zeros((img_dil.shape[0] + 2, img_dil.shape[1] + 2), np.uint8)
 
 # Perform flood filling on the image
-cv2.floodFill(img, mask, seed_point, fill_color, lo_diff, up_diff)
-
-# Convert the image to grayscale
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-# Apply thresholding to the grayscale image
-ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY)
+cv2.floodFill(img_dil, mask, seed_point, fill_color, lo_diff, up_diff)
 
 # Display the resulting binary image
-show('Binary Image', thresh)
+show('Binary Image', img_dil)
 
 
 
