@@ -62,5 +62,5 @@ for i in range(1, num_labels):
 
 plt.figure()
 plt.imshow(labeled_shapes)
-
+# LOS CONTORNOS NO SE VINCULAN EN ORDEN CON LOS OBJETOS SEGMENTADOS, ES DECIR CONTORNO 1 NO NECESARIAMENTE CORRESPONDE  CON OBJETO 1
 plt.show()

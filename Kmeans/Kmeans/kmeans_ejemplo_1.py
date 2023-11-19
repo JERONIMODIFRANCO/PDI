@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # --- Generamos datos a clasificar ------------------------------------------------------
-X = np.random.randint(25,50,(25,2))
+X = np.random.randint(25,50,(25,2)) #lim inf, lim sup, tam salida
 Y = np.random.randint(60,85,(25,2))
 # X = np.random.randint(15,40,(25,2))
 # Y = np.random.randint(50,75,(25,2))
