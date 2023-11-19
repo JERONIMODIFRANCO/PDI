@@ -1,6 +1,8 @@
 import cv2
+
 import numpy as np
 import matplotlib.pyplot as plt
+import imutils
 
 # Definimos función para mostrar imágenes
 def imshow(img, new_fig=True, title=None, color_img=False, blocking=False, colorbar=True, ticks=False):
@@ -19,35 +21,67 @@ def imshow(img, new_fig=True, title=None, color_img=False, blocking=False, color
         plt.show(block=blocking)
 
 def show(window_title,img_name):
-    # Display the resulting edge image
+    # mostramos la imagen
     cv2.imshow(window_title, img_name)
 
-    # Wait for a key press and then close the window
+    # cerramos con el esc
     key = cv2.waitKey(0)
     if key == 27:
         cv2.destroyAllWindows()
         
-# --- Load image ---------------------------------------------------------------------------------
-img = cv2.imread('TP2/Patentes/img01.png', cv2.IMREAD_COLOR)
-# Get the size of the image
+# --- cargar imagen ---------------------------------------------------------------------------------
+img = cv2.imread('TP2/Patentes/img02.png', cv2.IMREAD_COLOR)
+# --- propiedades  ---------------------------------------------------------------------------------
 height, width, channels = img.shape
-# Print the size of the image
-print(f'The size of the image is {width}x{height} pixels with {channels} channels.')
+print('The size of the image is {width}x{height} pixels with {channels} channels.')
+# --- pasamos a rgb  ---------------------------------------------------------------------------------
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-# imshow(img, title="Imagen Original", ticks=True)
-# --- Convert to grayscale ------------------------------------------------------------------------
+# imshow(img, title="Imagen Original")
+# --- escala de grises  ------------------------------------------------------------------------
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# imshow(img_gray, title="Imagen en escala de grises", ticks=True)
-# Apply adaptive thresholding
-img_bw = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-imshow(img_bw, title="Imagen binarizada")
-# img_bw=~img_bw
-# --- Find contours ------------------------------------------------------------------------------
-contours, hierarchy = cv2.findContours(img_bw, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-# --- Find contours with an area greater than 1200 and smaller than a specified max area ------------
-min_area = 1000
-max_area = 2000
-selected_contours = [cnt for cnt in contours if min_area < cv2.contourArea(cnt) ]
-cv2.drawContours(img, selected_contours, -1, (0, 0, 255), 1)
-imshow(img, title="Contornos con área mayor a {}".format(min_area))
+# imshow(img_gray, title="Imagen en escala de grises")
+# --- reduccion de ruido -----------------------------------------------------------------------------
+img_bil_fil = cv2.bilateralFilter(img_gray,11,17,17) 
+imshow(img_bil_fil, title="Imagen filtrada con filtro bilateral")
+# imshow(img_bil_fil, title="Imagen filtrada con filtro bilateral")
+# retval, img_bw = cv2.threshold(img_bil_fil, 140, 255, cv2.THRESH_BINARY)
+# imshow(img_bw,title='Imagen binarizada')
+# --- deteccion de bordes -----------------------------------------------------------------------------
+img_edge = cv2.Canny(img_bil_fil, 17, 200, apertureSize=5, L2gradient=True)
+imshow(img_edge,title="Deteccion de bordes con canny")
+height, width = img_edge.shape
+print(f'The size of the image is {width}x{height}.')
+# --- deteccion de bordes -----------------------------------------------------------------------------
+keypoints = cv2.findContours(img_edge.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+# img_cnt_v1 = cv2.drawContours(img.copy(),contours_v1,-1, (0, 255, 0), 1)
+# imshow(img_cnt_v1,title="Imagen con contornos")
+contours = imutils.grab_contours(keypoints) #simplifica los contornos
+contours = sorted(contours, key=cv2.contourArea,reverse=True)[:10] #devolvemos en orden descendente los 10 primeros contornos con mas area
 
+location = None
+for contour in contours:
+    area = cv2.contourArea(contour)  # Calculate the area of the contour
+    print("area",area)
+    aprox = cv2.approxPolyDP(contour, 10, True)  # Approximate the contour
+    if (len(aprox) == 4) :  # Add the area restriction condition
+        # x, y, w, h = cv2.boundingRect(contour)
+        # if (w/h>1) and (2.5>w/h):
+        location = aprox
+            # print("Se encontro un contorno con 4 puntos que lo aproximan y cumple con el área, y vale",area)
+        break
+
+# print("ubicacion de la placa
+# for row in location:
+#     print(row)
+    
+mask = np.zeros(img_gray.shape,np.uint8)
+new_img = cv2.drawContours(mask,[location],0,255,-1)
+new_img = cv2.bitwise_and(img,img,mask=mask)
+imshow(new_img,title="Ubicacion de la patente en la imagen original")
+
+(x,y) = np.where(mask==255)
+(x1,y1) = (np.min(x),np.min(y))
+(x2,y2) = (np.max(x),np.max(y))
+recorte = img_gray[x1:x2+1,y1:y2+1]
+recorte = cv2.cvtColor(recorte,cv2.COLOR_BGR2RGB)
+imshow(recorte,title="Patente")
