@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import imutils
-
+hola 
 def distancia_euclidiana(punto1, punto2):
     return np.sqrt(np.sum((np.array(punto1) - np.array(punto2))**2))
 
