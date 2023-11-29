@@ -153,18 +153,18 @@ for contour in contours:
 
 # generar mascara de patente para "unir" patente con caracteres detectados con la imagen original 
 mask = np.zeros(img_gray.shape,np.uint8)
-# new_img = cv2.drawContours(mask,[location],0,255,-1)
-# new_img = cv2.bitwise_and(img,img,mask=mask)
+mask = cv2.drawContours(mask,[location],0,255,-1) # mascara patente
 mask_fondo = ~ mask # mascara para el fondo
 img_fondo = cv2.bitwise_and(img_2,img_2,mask=mask_fondo)#componente fondo de la imagen
-img_patente = cv2.bitwise_and(img,img,mask=mask) # componente patente de la imagen 
+imshow(img_fondo,title="Imagen fondo")
+img_patente = cv2.bitwise_and(img,img,mask=mask) # componente patente de la imagen
+imshow(img_patente,title="Imagen patente")
 img_final = cv2.add(img_fondo,img_patente) # suma de fondo y patente
 imshow(img_final,title="Ubicacion de la patente y caracteres en la imagen original")
 
 # imagen recortada de patente
-(x,y) = np.where(mask==255)
-(x1,y1) = (np.min(x),np.min(y))
-(x2,y2) = (np.max(x),np.max(y))
-recorte = img_gray[x1:x2+1,y1:y2+1]
-recorte = cv2.cvtColor(recorte,cv2.COLOR_BGR2RGB)
+(x,y) = np.where(mask==255) # valores de x e y donde esta la mascara de la patente
+(x1,y1) = (np.min(x),np.min(y)) # valores inciales boundig box
+(x2,y2) = (np.max(x),np.max(y)) # valores finales boundig box
+recorte = img_2[x1:x2+1,y1:y2+1]  # recorte 
 imshow(recorte,title="Patente")
