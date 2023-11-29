@@ -23,7 +23,7 @@ def imshow(img, new_fig=True, title=None, color_img=False, blocking=False, color
         plt.show(block=blocking)
 
 # Load image
-img = cv2.imread('img03.png', cv2.IMREAD_COLOR) 
+img = cv2.imread('Patentes/img03.png', cv2.IMREAD_COLOR) 
 #problema en imagen numero:  11(la patente la detecta, el tema es que hay varios rectangulos y al encontrar el primero ya lo toma como correcto)
 # en la 8 tenemos problema si el th es menor a 124
 #version 4 detectamos todas las patentes, caracteres: 60/72 = 0.833
@@ -35,7 +35,7 @@ height, width, channels = img.shape
 
 # Convert image from BGR to RGB
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
+img_2 = img.copy()
 # Convert image to grayscale
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -141,7 +141,11 @@ for contour in contours:
 mask = np.zeros(img_gray.shape,np.uint8)
 new_img = cv2.drawContours(mask,[location],0,255,-1)
 new_img = cv2.bitwise_and(img,img,mask=mask)
-imshow(new_img,title="Ubicacion de la patente en la imagen original")
+mask_fondo = ~ mask
+img_fondo = cv2.bitwise_and(img_2,img_2,mask=mask_fondo)
+img_patente = cv2.bitwise_and(img,img,mask=mask)
+img_final = cv2.add(img_fondo,img_patente)
+imshow(img_final,title="Ubicacion de la patente en la imagen original")
 
 (x,y) = np.where(mask==255)
 (x1,y1) = (np.min(x),np.min(y))
