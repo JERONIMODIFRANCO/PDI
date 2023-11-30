@@ -24,7 +24,7 @@ def imshow(img, new_fig=True, title=None, color_img=False, blocking=False, color
     if new_fig:        
         plt.show(block=blocking)
 
-for i in range(1, 12):
+for i in range(1, 13):
     file_name = f'Patentes/img{i:02d}.png'
     # Cargar imagen
     img = cv2.imread(file_name, cv2.IMREAD_COLOR) 
@@ -170,3 +170,9 @@ for i in range(1, 12):
     (x2,y2) = (np.max(x),np.max(y)) # valores finales boundig box
     recorte = img_2[x1:x2+1,y1:y2+1]  # recorte 
     # imshow(recorte,title="Patente")
+
+    # subplots imagen con caracteres detectados, recorte de patente
+    plt.figure()
+    plt.subplot(121), plt.imshow(img_final),
+    plt.subplot(122), plt.imshow(recorte)
+    plt.show(block=False)
