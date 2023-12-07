@@ -3,7 +3,7 @@ import cv2
 from PIL import Image, ImageDraw
 
 # --- Input ---------------------------------------------------------------------------------
-file_name = "ruta_1.mp4"
+file_name = "ruta_2.mp4"
 
 # --- Proceso video -------------------------------------------------------------------------
 capture = cv2.VideoCapture(file_name)
@@ -13,7 +13,7 @@ while True:
     ret, img = capture.read()
     if not ret: 
         break
-    cv2.imshow("Original", img)
+    # cv2.imshow("Original", img)
     # cv2.line(img,(50,50),(500,500),(0,0,255),2)
     # cv2.imshow("linea", img)
     # --- ROI --------------------------------------------------------------------------
@@ -39,15 +39,15 @@ while True:
     # cv2.imshow("ROI", img_bw)
 
     # Apply Hough transform
-    lines = cv2.HoughLinesP(img_roi, rho=1.5, theta=np.pi/180, threshold=75, minLineLength=5, maxLineGap=450)
+    lines = cv2.HoughLinesP(img_roi, rho=1.5, theta=np.pi/180, threshold=80, minLineLength=5, maxLineGap=450)
     # lines = cv2.HoughLinesP(img_roi, rho=1.5, theta=np.pi/180, threshold=70, minLineLength=5, maxLineGap=450) mejor resultado
     # Draw the detected lines on the original image
 
     # linea derecha
-    x1_der=[]
-    x2_der=[]
-    y1_der=[]
-    y2_der=[]
+    x1_der_sum=0
+    x2_der_sum=0
+    y1_der_sum=0
+    y2_der_sum=0
 
     x1_d_med=0
     x2_d_med=0
@@ -55,55 +55,58 @@ while True:
     y2_d_med=0
 
     # linea izquierda
-    x1_izq=[]
-    x2_izq=[]
-    y1_izq=[]
-    y2_izq=[]
+    x1_izq_sum=0
+    x2_izq_sum=0
+    y1_izq_sum=0
+    y2_izq_sum=0
 
     x1_i_med=0
     x2_i_med=0
     y1_i_med=0
     y2_i_med=0
+    k=0
+    j=0
 
     for line in lines:
         x1, y1, x2, y2 = line[0]
         if x2 > 480:
-            # x2 = x2 + int((x2/y2)*(539-y2))
+            x2 = x2 + int((x2/y2)*(539-y2))
             if x2 >= 960:
                 x2=959
             y2 = 539
-            print('derecha')
-            print(x1,y1,x2,y2)
-            x2_der.append(x2)                    #append(x) agrega el elemento x al final de la lista x2_der
-            x1_der.append(x1)
-            y1_der.append(y1)
-            y2_der.append(y2)
-            
+            x1_der_sum=x1_der_sum+x1  
+            x2_der_sum=x2_der_sum+x2               #append(x) agrega el elemento x al final de la lista x2_der  
+            y1_der_sum=y1_der_sum+y1              
+            y2_der_sum=y2_der_sum+y2 
+            k+=1
         else:
-            # x1 = x1 - int((x2/y2)*(539-y1))
+            x1 = x1 - int((x2/y2)*(539-y1))
             if x1 <= 0:
-                x1=2
+                x1=1
             y1 = 539
-            print('izq gato')
-            print(x1,y1,x2,y2)
-            x2_izq.append(x2)
-            x1_izq.append(x1)
-            y1_izq.append(y1)
-            y2_izq.append(y2)
+            x1_izq_sum=x1_izq_sum+x1  
+            x2_izq_sum=x2_izq_sum+x2               #append(x) agrega el elemento x al final de la lista x2_der  
+            y1_izq_sum=y1_izq_sum+y1              
+            y2_izq_sum=y2_izq_sum+y2 
+            j+=1
 
+    if k==0:
+        k=1
+    if j==0:
+        j=1
 
     # media linea derecha
-    x1_d_med=int(np.mean(np.array(x1_der)))
-    x2_d_med=int(np.mean(np.array(x2_der)))
-    y1_d_med=int(np.mean(np.array(y1_der)))
-    y2_d_med=int(np.mean(np.array(y2_der)))
+    x1_d_med=int(x1_der_sum/k)
+    x2_d_med=int(x2_der_sum/k)
+    y1_d_med=int(y1_der_sum/k)
+    y2_d_med=int(y2_der_sum/k)
 
     # media linea izquierda
-    x1_i_med=int(np.mean(np.array(x1_izq)))
-    x2_i_med=int(np.mean(np.array(x2_izq)))
-    y1_i_med=int(np.mean(np.array(y1_izq)))
-    y2_i_med=int(np.mean(np.array(y2_izq)))
-               
+    x1_i_med=int(x1_izq_sum/j)
+    x2_i_med=int(x2_izq_sum/j)
+    y1_i_med=int(y1_izq_sum/j)
+    y2_i_med=int(y2_izq_sum/j)
+
     # grafico lineas
     cv2.line(img, (x1_d_med, y1_d_med), (x2_d_med, y2_d_med), (255, 0, 0), 10)   # linea derecha
     cv2.line(img, (x1_i_med, y1_i_med), (x2_i_med, y2_i_med), (255, 0, 0), 10)   # linea izquierda
@@ -116,5 +119,4 @@ while True:
 capture.release()
 # out.release()
 cv2.destroyAllWindows()
-
 
