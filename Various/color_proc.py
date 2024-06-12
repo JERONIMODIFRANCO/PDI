@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image   # Pillow --> https://pillow.readthedocs.io/en/stable/
 
-img = cv2.imread('peppers.png')
+img = cv2.imread('./figures/peppers.png')
 plt.figure(1)
 plt.imshow(img)
 plt.show()
@@ -51,7 +51,7 @@ plt.show()
 
 
 # --- Dithering ------------------------------------------------------------------------
-img_PIL = Image.open('cameraman.tif')
+img_PIL = Image.open('./figures/cameraman.tif')
 image_dithering = img_PIL.convert(mode='1', dither=Image.FLOYDSTEINBERG)   # https://pillow.readthedocs.io/en/stable/reference/Image.html?highlight=convert#PIL.Image.Image.convert
 plt.figure(4)
 ax1 = plt.subplot(121)
@@ -81,7 +81,7 @@ Ncolors_out = len(list(set(list_of_pixels_out)))
 
 
 # Color
-img_PIL = Image.open('peppers.png')
+img_PIL = Image.open('./figures/peppers.png')
 # image_dithering = img_PIL.convert(mode='P', palette=Image.ADAPTIVE, dither=Image.FLOYDSTEINBERG)  # https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering
 image_dithering = img_PIL.convert(mode='P', palette=Image.ADAPTIVE, dither=Image.FLOYDSTEINBERG, colors=4)
 plt.figure(5)
@@ -124,7 +124,7 @@ plt.figure, plt.imshow(image_dithering_indexs, cmap='gray'), plt.colorbar(), plt
 # -----------------------------------
 
 # --- Espacio de color HSV ----------------------------------------------
-img = cv2.imread('peppers.png')
+img = cv2.imread('./figures/peppers.png')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) # Rangos --> H: 0-179  / S: 0-255  / V: 0-255
 h, s, v = cv2.split(img_hsv)
@@ -152,7 +152,7 @@ plt.imshow(rojo_img)
 plt.show()
 
 # --- Filtrado espacial ----------------------------------------------------------------
-img = cv2.imread('peppers.png')
+img = cv2.imread('./figures/peppers.png')
 img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 # Usando kernel y filter 2D
@@ -174,7 +174,7 @@ plt.subplot(224), plt.imshow(median), plt.title('Median blur'), plt.xticks([]), 
 plt.show()
 
 # Filtrado Espacial - High Boost
-img = cv2.imread('Fig0604(a).tif')
+img = cv2.imread('./figures/Fig0604(a).tif')
 img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 w1 = np.ones((3, 3), np.float32)/9
 w2 = np.ones((3, 3), np.float32)  # Laplaciano  

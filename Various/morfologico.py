@@ -15,8 +15,8 @@ def imshow(img, title=None, color_img=False):
     plt.show()
 
 
-A = cv2.imread('Fig0903(a).tif')
-B = cv2.imread('Fig0903(b).tif')
+A = cv2.imread('./figures/Fig0903(a).tif')
+B = cv2.imread('./figures/Fig0903(b).tif')
 imshow(A, 'A')
 imshow(B, 'B')
 Ac = 255 - A
@@ -41,14 +41,14 @@ plt.close('all')
 
 # Operaciones morfológicas
 # Dilate
-F = cv2.imread('Fig0906(a).tif')
+F = cv2.imread('./figures/Fig0906(a).tif')
 imshow(F)
 kernel = np.array([[0,1,0],[1,1,1],[0,1,0]],np.uint8)
 Fd = cv2.dilate(F, kernel, iterations=1)
 imshow(Fd)
 
 # Erode
-A = cv2.imread('Fig0908(a).tif')
+A = cv2.imread('./figures/Fig0908(a).tif')
 imshow(A)
 L = 40
 B = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (L, L) )
@@ -57,21 +57,21 @@ A2 = cv2.erode(A, B, iterations=1)
 imshow(A2)
 
 # Open
-A = cv2.imread('Fig0910(a).tif')
+A = cv2.imread('./figures/Fig0910(a).tif')
 B = cv2.getStructuringElement(cv2.MORPH_RECT, (37, 37))
 Aop = cv2.morphologyEx(A, cv2.MORPH_OPEN, B)
 imshow(Aop)
 imshow(A)
 
 # Close
-A = cv2.imread('Fig0910(a).tif')
+A = cv2.imread('./figures/Fig0910(a).tif')
 B = cv2.getStructuringElement(cv2.MORPH_RECT, (37, 37))
 Aclau = cv2.morphologyEx(A, cv2.MORPH_CLOSE, B)
 imshow(Aclau)
 imshow(A)
 
 ###
-f = cv2.imread('Fig0911(a).tif')
+f = cv2.imread('./figures/Fig0911(a).tif')
 se = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
 se2 = cv2.getStructuringElement(cv2.MORPH_RECT, (6, 6))
 fop = cv2.morphologyEx(f, cv2.MORPH_OPEN, se)
@@ -86,7 +86,7 @@ imshow(fop_cls)
 # B2 = strel([1 0 0;1 0 0;1 0 0]);
 # g = bwhitmiss( f , B1 , B2 );
 # ----------------------------------------------
-f = cv2.imread('Fig0913(a).tif', cv2.IMREAD_GRAYSCALE)
+f = cv2.imread('./figures/Fig0913(a).tif', cv2.IMREAD_GRAYSCALE)
 B = np.array([[-1, -1, -1], [-1, 1, 1], [-1, 1, 0]])  # "1": lugares donde debe haber hit / "-1":lugares donde debe haber miss /  "0": Da igual
 #B = np.array([[-1, 0, 0], [-1, 1, 1], [-1, 0, 0]])
 g = cv2.morphologyEx(f.copy(), cv2.MORPH_HITMISS, B)
@@ -99,7 +99,7 @@ plt.subplot(122,sharex=ax1,sharey=ax1), plt.imshow(g, cmap='gray'), plt.title('H
 plt.show()
 
 # BWLabel - Componentes conectadas
-img = cv2.imread('Fig0917(a).tif', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('./figures/Fig0917(a).tif', cv2.IMREAD_GRAYSCALE)
 connectivity = 8
 output = cv2.connectedComponentsWithStats(img, connectivity, cv2.CV_32S)  # https://docs.opencv.org/4.5.3/d3/dc0/group__imgproc__shape.html#ga107a78bf7cd25dec05fb4dfc5c9e765f
 # Resultados
@@ -118,7 +118,7 @@ for st in stats:
 imshow(img=im_color, color_img=True)
 
 ### ImReconstruct
-f = cv2.imread('Fig0922(a).tif', cv2.IMREAD_GRAYSCALE)
+f = cv2.imread('./figures/Fig0922(a).tif', cv2.IMREAD_GRAYSCALE)
 fe = cv2.erode(f, np.ones((51, 1)), iterations=1)
 fo = cv2.morphologyEx(f, cv2.MORPH_OPEN, np.ones((51, 1)))
 imshow(f)
@@ -144,7 +144,7 @@ imshow(fobr)
 
 # Morfológico en escala de grises
 plt.close('all')
-f = cv2.imread('Fig0926(a).tif', cv2.IMREAD_GRAYSCALE)
+f = cv2.imread('./figures/Fig0926(a).tif', cv2.IMREAD_GRAYSCALE)
 imshow(f)
 
 umbral, g1 = cv2.threshold(f, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)     # Similar a Matlab: g1=im2bw(f);
