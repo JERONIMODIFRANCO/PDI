@@ -26,3 +26,4 @@ plt.scatter(B[:,0], B[:,1], c='r') # centroides
 plt.scatter(center[:,0], center[:,1], s=80, c='y', marker='s')
 plt.xlabel('dim1'), plt.ylabel('dim2')
 plt.show()
+
